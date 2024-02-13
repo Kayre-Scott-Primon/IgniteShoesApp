@@ -6,6 +6,25 @@ import { useEffect, useState } from "react";
 import { OSNotification, OneSignal } from "react-native-onesignal";
 import { NotificationEventTypeMap } from "react-native-onesignal/dist/models/NotificationEvents";
 import { Notification } from "../components/Notification";
+import * as Linking from "expo-linking";
+
+const linking = {
+  prefixes: [
+    "igniteshoesapp://",
+    "com.kscottp.igniteshoesapp://",
+    "exp+igniteshoesapp://",
+  ],
+  config: {
+    screens: {
+      details: {
+        path: "details/:productId",
+        parse: {
+          productId: (productId: string) => productId,
+        },
+      },
+    },
+  },
+};
 
 export function Routes() {
   const { colors } = useTheme();
@@ -15,6 +34,12 @@ export function Routes() {
 
   const theme = DefaultTheme;
   theme.colors.background = colors.gray[700];
+
+  // const deepLinking = Linking.createURL("details", {
+  //   queryParams: { productId: "7" },
+  // });
+
+  // console.log(deepLinking);
 
   useEffect(() => {
     const unsubscribe = OneSignal.Notifications.addEventListener(
@@ -31,7 +56,7 @@ export function Routes() {
   }, []);
 
   return (
-    <NavigationContainer theme={theme}>
+    <NavigationContainer theme={theme} linking={linking}>
       <AppRoutes />
 
       {notification?.title && (

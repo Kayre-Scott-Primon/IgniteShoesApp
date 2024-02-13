@@ -23,9 +23,9 @@ OneSignal.initialize("35d716e0-4f05-46da-842f-64f380939524");
 
 OneSignal.User.addEmail("abc@email.com");
 
-tagUserEmailCreate("abc@email.com");
+//tagUserEmailCreate("abc@email.com");
 
-tagUserInfoCreae();
+//tagUserInfoCreae();
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Roboto_400Regular, Roboto_700Bold });

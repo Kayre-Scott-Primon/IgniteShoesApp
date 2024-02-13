@@ -9,23 +9,32 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { OSNotification } from "react-native-onesignal";
+import * as Linking from "expo-linking";
 
 type Props = {
   data: OSNotification;
   onClose: () => void;
 };
-type AdditionalDataProps = {
-  product_id?: string;
-  route?: "details";
+
+type CustomOSNotification = {
+  custom: any;
+  u: string;
 };
 
 export function Notification({ data, onClose }: Props) {
-  const { navigate } = useNavigation();
-
   function handleOnPress() {
-    const { product_id, route } = data.additionalData as AdditionalDataProps;
-    if (route === "details" && product_id) {
-      navigate("details", { productId: product_id });
+    // const { product_id, route } = data.additionalData as AdditionalDataProps;
+    // if (route === "details" && product_id) {
+    //   navigate("details", { productId: product_id });
+    //   onClose();
+    // }
+    const { custom }: CustomOSNotification = JSON.parse(
+      data.rawPayload.toString()
+    );
+    const { u: uri }: CustomOSNotification = JSON.parse(custom.toString());
+
+    if (uri) {
+      Linking.openURL(uri);
       onClose();
     }
   }
